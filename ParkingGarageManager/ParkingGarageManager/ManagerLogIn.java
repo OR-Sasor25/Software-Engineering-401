@@ -1,4 +1,4 @@
-
+package ParkingGarageManager;
 public class ManagerLogIn {
     private String id;
     private String password;
