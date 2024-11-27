@@ -1,3 +1,4 @@
+package ParkingGarageManager;
 import javax.swing.*;
 
 public class ManagerGUI {

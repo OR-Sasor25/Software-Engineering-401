@@ -1,3 +1,4 @@
+package ParkingGarageManager;
 import java.util.UUID;
 
 public class Garage {

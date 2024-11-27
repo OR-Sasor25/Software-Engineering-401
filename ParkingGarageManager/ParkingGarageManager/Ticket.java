@@ -1,3 +1,4 @@
+package ParkingGarageManager;
 
 
 public class Ticket {
