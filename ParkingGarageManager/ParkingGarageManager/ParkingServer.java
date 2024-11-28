@@ -60,10 +60,18 @@ public class ParkingServer {
 						case 1: 
 								//Ticket carOut = (Ticket)oIStream.readObject();
 							doPayTicket();
-						case 2:	doWriteReport();
-						case 3: doRetrieveTicket();
-						case 4: System.out.print("Client is loging out");
-						default: System.out.print("INVALID REQUEST");
+							break;
+						case 2:	
+							doWriteReport();
+							break;
+						case 3: 
+							doRetrieveTicket();
+							break;
+						case 4: 
+							System.out.println("Client is loging out");
+							break;
+						default: 
+							System.out.println("INVALID REQUEST");
 							break;			
 						}
 						
