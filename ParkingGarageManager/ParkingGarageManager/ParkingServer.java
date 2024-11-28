@@ -51,16 +51,22 @@ public class ParkingServer {
 					int choice;
 					do {
 						choice = request.read();
+						System.out.println("request "+ choice + "received" );
+						
 						switch(choice) {
-						case 0: doAddTicket();
-						case 1: doPayTicket();
+						case 0:
+								//Ticket carIn = (Ticket)oIStream.readObject();
+							doAddTicket();
+						case 1: 
+								//Ticket carOut = (Ticket)oIStream.readObject();
+							doPayTicket();
 						case 2:	doWriteReport();
 						case 3: doRetrieveTicket();
 						case 4: System.out.print("Client is loging out");
 						default: System.out.print("INVALID REQUEST");
-							break;
-						
+							break;			
 						}
+						
 					}while(choice != 4);
 				}else {
 					System.out.print("Invalid Username or Password");
@@ -81,19 +87,19 @@ public class ParkingServer {
 		//methods for passing objects into server and modifying garages
 		private void doRetrieveTicket() {
 			// TODO Auto-generated method stub
-			
+			System.out.println("retrieving ticket");
 		}
 		private void doAddTicket() {
-			// TODO Auto-generated method stub
 			
+			System.out.println("adding ticket");
 		}
 		private void doPayTicket() {
 			// TODO Auto-generated method stub
-			
+			System.out.println("paying ticket");
 		}
 		private void doWriteReport() {
 			// TODO Auto-generated method stub
-			
+			System.out.println("writing report");
 		}
 	}
 }
