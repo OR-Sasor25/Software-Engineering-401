@@ -15,7 +15,7 @@ public class ParkingServer {
 		//hard coded employee credentials
 	    static String managerUsername = "manager";
         static String managerPassword = "password";
-	
+        
 	public static void main(String[] args) throws Exception{
 		try (var listener = new ServerSocket(59898)) {
             System.out.println("The Server is running...");
@@ -49,17 +49,19 @@ public class ParkingServer {
 				if(employee.getId().equals(managerUsername) && employee.getPassword().equals(managerPassword)) {
 					//request are passed to choice as an int
 					int choice;
+					boolean running = true;
 					do {
 						choice = request.read();
 						System.out.println("request "+ choice + "received" );
 						
 						switch(choice) {
 						case 0:
-								//Ticket carIn = (Ticket)oIStream.readObject();
-							doAddTicket();
+							Ticket carIn = (Ticket)oIStream.readObject();
+							doAddTicket(carIn);
+							break;
 						case 1: 
-								//Ticket carOut = (Ticket)oIStream.readObject();
-							doPayTicket();
+							Ticket carOut = (Ticket)oIStream.readObject();
+							doPayTicket(carOut);
 							break;
 						case 2:	
 							doWriteReport();
@@ -69,13 +71,14 @@ public class ParkingServer {
 							break;
 						case 4: 
 							System.out.println("Client is loging out");
+							running = false;
 							break;
 						default: 
 							System.out.println("INVALID REQUEST");
 							break;			
 						}
 						
-					}while(choice != 4);
+					}while(running);
 				}else {
 					System.out.print("Invalid Username or Password");
 				}
@@ -97,13 +100,13 @@ public class ParkingServer {
 			// TODO Auto-generated method stub
 			System.out.println("retrieving ticket");
 		}
-		private void doAddTicket() {
-			
+		private void doAddTicket(Ticket car) {
 			System.out.println("adding ticket");
+			
 		}
-		private void doPayTicket() {
-			// TODO Auto-generated method stub
+		private void doPayTicket(Ticket car) {
 			System.out.println("paying ticket");
+			
 		}
 		private void doWriteReport() {
 			// TODO Auto-generated method stub
