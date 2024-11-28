@@ -1,5 +1,6 @@
 // cs401 group 1 - project
 // updated on 11/27
+package ParkingGarageManager;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
