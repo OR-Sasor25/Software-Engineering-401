@@ -1,5 +1,8 @@
 package ParkingGarageManager;
-public class ManagerLogIn {
+
+import java.io.Serializable;
+
+public class ManagerLogIn implements Serializable{
     private String id;
     private String password;
 
