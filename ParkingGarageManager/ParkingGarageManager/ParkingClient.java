@@ -24,9 +24,56 @@ import java.util.Scanner;
  * */
 public class ParkingClient {
     public static void main(String[] args) {
-    	ManagerGUI mgui = new ManagerGUI();
-    	CustomerGUI cgui = new CustomerGUI();
-    	mgui.ManagerLoginUI();
+        // Test code without server
+        ManagerGUI mgui = new ManagerGUI();
+        CustomerGUI cgui = new CustomerGUI();
+        //these should be passed through server
+        String managerUsername = "manager";
+        String managerPassword = "password";
+        Boolean isGarageFull=false;
+        Ticket ticket = new Ticket(123, 15.50); // Ticket with ID 123 and price $15.50
+
+
+        // Handle manager login
+        while (true) {
+            mgui.ManagerLoginUI(); // User enters login info
+            // Check user info against server or simulate check here
+            if (managerUsername.equals(mgui.getEnteredUsername()) && managerPassword.equals(mgui.getEnteredPassword())) {
+                break; // Break loop if correct
+            } else {
+                mgui.failedLogin(); // Loop until correct
+            }
+        }
+
+        // Manager's selection screen
+        while (true) {
+            if (mgui.ManagerSelectionScreen()) {
+                // Handle the report printing (true from the manager screen)
+                // Add your report printing logic here
+                mgui.printReport();
+            } else {
+                break; // Exit loop if customer interface should be started
+            }
+        }
+
+        // Start customer GUI
+        while (true) {
+            boolean printTicket = cgui.promptCustomerAction(); // Get customer action
+            if (printTicket) {
+            	
+            		cgui.displayGarageStatus(isGarageFull);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
+            		if(!isGarageFull) {
+                    cgui.printTicket(ticket); // This should create the Ticket_123.txt file
+
+            	}
+            } else {
+                if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
+                	ticket.setPaidStatus(true);
+                }
+                
+            } 
+            break; // Exit remove one server is implemeneted
+        }
     	
     	Scanner scan = new Scanner(System.in);
     	if (args.length != 1) {
@@ -51,7 +98,7 @@ public class ParkingClient {
     		}
     		
     		// Simulate the garage status
-            boolean isGarageFull = false; // Example value, change to test the behavior
+            //boolean isGarageFull = false; // Example value, change to test the behavior
 
             cgui.displayGarageStatus(isGarageFull); // Call the second function
             if (!isGarageFull) {
