@@ -71,7 +71,7 @@ public class ParkingServer {
 							Garages[employee.getGarageID()] = new Garage(10);
 						}
 						
-						Customer[] Customers = new Customer[Garages[employee.getGarageID()].getCapacity()];
+						Ticket[] Customers = new Ticket[Garages[employee.getGarageID()].getCapacity()];
 						
 						//request are passed to choice as an int
 						int choice;
@@ -92,12 +92,11 @@ public class ParkingServer {
 							switch(choice) {
 							case 0:
 								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers);
-								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()-1].getLicensePlate());
+								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()-1].getTicketID());
 								break;
 							case 1: 
-								Customer carOut = (Customer) oIStream.readObject();
-								String plate = carOut.getLicensePlate();
-								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, plate, location);
+								Ticket carOut = (Ticket) oIStream.readObject();
+								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, carOut , location);
 								break;
 							case 2:	
 								doWriteReport();
@@ -137,10 +136,10 @@ public class ParkingServer {
             }
 		}
 		
-		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Customer[] Customers) {
+		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers) {
 			if(local.checkSpace()) {
 				try {
-					Customer carIn = (Customer)ois.readObject();
+					Ticket carIn = (Ticket)ois.readObject();
 					System.out.println("adding customer");
 					Customers[local.getSpacesTaken()] = carIn;
 					local.parkVehicle();
@@ -151,13 +150,13 @@ public class ParkingServer {
 				
 
 			}else {
-				System.out.println("Garrage is full!")
+				System.out.println("Garrage is full!");
 			}
 		}
 		
-		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Customer[] Customers, String Plate, ParkingSystem location){
+		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut, ParkingSystem location){
 			try {
-				Customer carOut = (Customer)ois.readObject();
+				carOut = (Ticket)ois.readObject();
 				System.out.println("finding ticket");
 			
 			} catch (ClassNotFoundException e) {
