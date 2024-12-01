@@ -1,17 +1,21 @@
 package ParkingGarageManager;
 
+import java.time.LocalDateTime;
 
 public class Ticket {
 	
     private int ticketID;
     private double price;
     private boolean paidStatus;
-
+    private String timeArrived;
     
     public Ticket(int ticketID, double price) {
         this.ticketID = ticketID;
         this.price = price;
         this.paidStatus = false; 
+        this.timeArrived = LocalDateTime();
+        this.ticketPrice = ticketPrice; // pass the object here and storing the Ticket object
+
     }
 
     // the gettrs and setters
@@ -53,9 +57,23 @@ public class Ticket {
         this.price = hoursParked * ratePerHour;
     }
 
+    public void setTimeArrived(String timeArrived) {
+        this.timeArrived = timeArrived;
+    }
+    
+    public String getTimeArrived() {
+        return timeArrived;
+    }
+    
+
     public void printTicket() {
         System.out.println("The ticket ID is: " + ticketID);
         System.out.println("the total price is: $" + price);
         System.out.println("Paid: " + (paidStatus ? "Yes" : "No"));
     }
+
+
+
+
+
 }
