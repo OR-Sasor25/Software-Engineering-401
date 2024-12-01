@@ -23,7 +23,7 @@ import java.util.Scanner;
  * 
  * */
 public class ParkingClient {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         // Test code without server
         ManagerGUI mgui = new ManagerGUI();
         CustomerGUI cgui = new CustomerGUI();
@@ -32,18 +32,39 @@ public class ParkingClient {
         String managerPassword = "password";
         Boolean isGarageFull=false;
         Ticket ticket = new Ticket(123, 15.50); // Ticket with ID 123 and price $15.50
-
-
-        // Handle manager login
-        while (true) {
-            mgui.ManagerLoginUI(); // User enters login info
-            // Check user info against server or simulate check here
-            if (managerUsername.equals(mgui.getEnteredUsername()) && managerPassword.equals(mgui.getEnteredPassword())) {
-                break; // Break loop if correct
-            } else {
-                mgui.failedLogin(); // Loop until correct
-            }
+        
+        //Initializes Client with server address
+        Scanner scan = new Scanner(System.in);
+    	if (args.length != 1) {
+            System.err.println("Pass the server IP as the sole command line argument");
+            return;
         }
+    	
+    	try (var socket = new Socket(args[0], 59898)) {
+    		
+    		//Input and Output streams to allow passing objects between server and client
+			ObjectOutputStream oOStream = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream oIStream = new ObjectInputStream(socket.getInputStream());
+			OutputStream request = (socket.getOutputStream());
+			ManagerLogIn employeeIn;
+    		// Handle manager login
+            do {
+                mgui.ManagerLoginUI(); // User enters login info
+                // Check user info against server or simulate check here
+                
+                //garageID is initialized to 0 but it should also be passed with a field
+                int garageID = 0;
+        		//Object that passes a login to server
+        		ManagerLogIn employeeOut = new ManagerLogIn(mgui.getEnteredUsername(),mgui.getEnteredPassword(), garageID);
+        		oOStream.writeObject(employeeOut);
+        		
+        		//receives the validated login from the server
+        		employeeIn = (ManagerLogIn)oIStream.readObject();
+				if (employeeIn.getStatus().equals("inactive")) {
+					mgui.failedLogin(); // Loop until correct
+                }
+    	}while (employeeIn.getStatus().equals("inactive"));
+        
 
         // Manager's selection screen
         while (true) {
@@ -72,39 +93,14 @@ public class ParkingClient {
                 }
                 
             } 
-            break; // Exit remove one server is implemeneted
+            break; // Exit remove one server is implemented
         }
     	
-    	Scanner scan = new Scanner(System.in);
-    	if (args.length != 1) {
-            System.err.println("Pass the server IP as the sole command line argument");
-            return;
-        }
-    	
-    	try (var socket = new Socket(args[0], 59898)) {
-    		//Input and Output streams to allow passing objects between server and client
-			ObjectOutputStream oOStream = new ObjectOutputStream(socket.getOutputStream());
-			ObjectInputStream oIStream = new ObjectInputStream(socket.getInputStream());
-			OutputStream request = (socket.getOutputStream());
-			
-    		//some test code for the server
-    		ManagerLogIn employee = new ManagerLogIn("manager", "password");
-    		oOStream.writeObject(employee);
-    		
-    		
-    		for(int i = 0; i < 4; i++) {
-    			int choice = scan.nextInt();
-    			request.write(choice);
-    		}
-    		
-    		// Simulate the garage status
-            //boolean isGarageFull = false; // Example value, change to test the behavior
-
-            cgui.displayGarageStatus(isGarageFull); // Call the second function
-            if (!isGarageFull) {
-                cgui.promptCustomerAction();
-           }
-    	} catch (IOException e) {
+        request.write(3);
+    	} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
