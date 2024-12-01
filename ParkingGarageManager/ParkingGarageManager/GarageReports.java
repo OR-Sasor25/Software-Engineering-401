@@ -1,10 +1,14 @@
-//updated 11/27/24
-//
+//updated 11/30/24
 
+package useME; // change package to work with your files
+
+import java.io.*;
 import java.time.LocalDateTime;
 
 
-public class GarageReports {
+public class GarageReports implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String date; // the day of the chosen report
     private String id; // this is the 
@@ -38,7 +42,8 @@ public class GarageReports {
             file, etc, so we can have access and use the information later. (create list, array, file?) */
     }
 
-    public String getCarTracker(){
+    // updated to int from string - 11/30
+    public int getCarTracker(){
 
         return carTracker;
            
@@ -65,8 +70,17 @@ public class GarageReports {
         paySummary = "Total earnings: " + fee;
         carTracker++;
     }
+
+    // Method to serialize the object to a stream
+    public void writeToStream(ObjectOutputStream out) throws IOException {
+        out.writeObject(this);
+    }
+
+     // Method to deserialize the object from a stream
+     public static GarageReports readFromStream(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        return (GarageReports) in.readObject();
+    }
+
 }
 
 
-    
-}
