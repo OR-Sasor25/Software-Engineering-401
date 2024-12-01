@@ -71,7 +71,9 @@ public class ParkingClient {
             if (mgui.ManagerSelectionScreen()) {
                 // Handle the report printing (true from the manager screen)
                 // Add your report printing logic here
-                mgui.printReport();
+            	request.write(2);
+            	GarageReports report = (GarageReports)oIStream.readObject();
+                mgui.printReport(report);
             } else {
                 break; // Exit loop if customer interface should be started
             }

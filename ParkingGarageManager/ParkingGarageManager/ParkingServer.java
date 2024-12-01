@@ -47,6 +47,7 @@ public class ParkingServer {
 				boolean canLogOut = false;
 				//Should be used in payTicket
 				ParkingSystem location = new ParkingSystem(7.50f);
+				GarageReports report = new GarageReports();
 				ManagerLogIn employee;
 				do {
 					//variable that reads ManagerLogInObjects
@@ -99,7 +100,7 @@ public class ParkingServer {
 								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, carOut , location);
 								break;
 							case 2:	
-								doWriteReport();
+								doWriteReport(report);
 								break;
 							case 3: 
 								System.out.println("Client is loging out");
@@ -170,7 +171,7 @@ public class ParkingServer {
 			
 		}
 		
-		private void doWriteReport() {
+		private void doWriteReport(GarageReports report) {
 			
 			System.out.println("writing report");
 		}

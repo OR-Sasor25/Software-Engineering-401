@@ -71,7 +71,7 @@ public class ManagerGUI {
 	}
 
 	// Method to handle the Print Report action
-	public void printReport() {
+	public void printReport(GarageReports Report) {
 		// Logic for printing the report (placeholder, replace with actual logic)
 		System.out.println("Report is being printed...");
 
