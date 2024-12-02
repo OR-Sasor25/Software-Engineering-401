@@ -99,7 +99,7 @@ public class ParkingServer {
 								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, carOut);
 								break;
 							case 2:	
-								doWriteReport(report);
+								doWriteReport(oIStream, oOStream, report);
 								break;
 							case 3: 
 								System.out.println("Client is loging out");
@@ -170,7 +170,7 @@ public class ParkingServer {
 			
 		}
 		
-		private void doWriteReport(GarageReports report) {
+		private void doWriteReport(ObjectInputStream ois, ObjectOutputStream oos, GarageReports report) {
 			
 			System.out.println("writing report");
 		}
