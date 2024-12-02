@@ -63,25 +63,25 @@ public class ManagerGUI {
 	    JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.INFORMATION_MESSAGE);
 	} 
 
-	public Boolean ManagerSelectionScreen() {
-		// Define options
-		String[] options = { "Print Report", "Turn On Customer GUI" };
+	public int ManagerSelectionScreen() {
+	    // Define options
+	    String[] options = { "Print Report", "Turn On Customer GUI" };
 
-		// Show the dialog
-		int choice = JOptionPane.showOptionDialog(null, "Welcome, " + enteredUsername + "!\nSelect an option:",
-				"Manager Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+	    // Show the dialog
+	    int choice = JOptionPane.showOptionDialog(null, "Welcome, " + enteredUsername + "!\nSelect an option:",
+	            "Manager Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
-		// Process the selection
-		if (choice == 0) {
-			// Print Report selected
-			return true;
-		} else if (choice == 1) {
-			// Turn On Customer GUI selected
-			return false;
-		}
+	    // Process the selection
+	    if (choice == 0) {
+	        // Print Report selected
+	        return 0;
+	    } else if (choice == 1) {
+	        // Turn On Customer GUI selected
+	        return 1;
+	    }
 
-		// Default return if no valid choice is made
-		return false;
+	    // Return 2 if the dialog is closed without selection (e.g., "X" pressed)
+	    return 2;
 	}
 
 	// Method to handle the Print Report action

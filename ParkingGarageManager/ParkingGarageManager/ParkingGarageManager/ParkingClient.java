@@ -69,12 +69,13 @@ public class ParkingClient {
 
         // Manager's selection screen
             while (true) {
-                if (mgui.ManagerSelectionScreen()) {
+            	int managerChoice = mgui.ManagerSelectionScreen();
+                if (managerChoice==0) {
                     try {
                         // Send the request to the server to write the report
                         request.write(2); 
 
-                        // receve it
+                        // recieve it
                         String serverResponse = (String) oIStream.readObject();
 
                         // display the server response to the user
@@ -85,32 +86,35 @@ public class ParkingClient {
                         e.printStackTrace();
                         mgui.displayMessage("Error occurred while generating the report.");
                     }
-                } else {
-                    break; // Exit the loop if transitioning to the customer interface
+                } else if(managerChoice==1){
+                	  // Start customer GUI
+                    while (true) {
+                        int printTicket = cgui.promptCustomerAction(); // Get customer action
+                        if (printTicket==0) {
+                        		request.write(0);
+                        		Garage status = (Garage)oIStream.readObject();
+                        		cgui.displayGarageStatus(status.checkSpace());//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
+                        		if(!status.checkSpace()) {
+                        			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
+                        			cgui.printTicket(Customer);
+                                }
+                        } else if(printTicket==1)  {
+                            if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
+                            	//implement pay ticket here
+                            }
+                            
+                        }else { 
+                        	break; 
+                        }// Exit remove one server is implemented
+                    }
+                	
+                    //break; // Exit the loop if transitioning to the customer interface
+                }else {
+                	break;
                 }
             }
 
-        // Start customer GUI
-        while (true) {
-            int printTicket = cgui.promptCustomerAction(); // Get customer action
-            if (printTicket==0) {
-            		request.write(0);
-            		Garage status = (Garage)oIStream.readObject();
-            		cgui.displayGarageStatus(status.checkSpace());//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
-            		if(!status.checkSpace()) {
-            			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
-            			cgui.printTicket(Customer);
-                    }
-            } else if(printTicket==1)  {
-                if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
-                	//implement pay ticket here
-                }
-                
-            }else { 
-            	break; 
-            }// Exit remove one server is implemented
-        }
-    	
+      
         request.write(3);
     	} catch (IOException e1) {
 			// TODO Auto-generated catch block
