@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Ticket {
     
-    private static int ticketID;
+    private static int ticketID = 0;
     private double price;
     private boolean paidStatus;
     private String timeArrived;
