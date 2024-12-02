@@ -13,13 +13,16 @@ public class CustomerGUI {
 	}
 
 	// Prompt customer to print or pay for a ticket
-	public boolean promptCustomerAction() {
+	public int promptCustomerAction() {
 		String[] options = { "Print Ticket", "Pay Ticket" };
 		int choice = JOptionPane.showOptionDialog(null, "Welcome! What would you like to do?", "Parking Garage",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-		// Return true for "Print Ticket", false for "Pay Ticket"
-		return choice == 0;
+		// Check for X or close button press
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			return 2;
+		}
+		return choice; // Return 0 for "Print Ticket", 1 for "Pay Ticket"
 	}
 
 	// Display welcome message or say Garage Full
@@ -54,15 +57,15 @@ public class CustomerGUI {
 					JOptionPane.showMessageDialog(null, "Your ticket is already paid. Thank you!", "Payment Status",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					while(true) {
-					String input = JOptionPane.showInputDialog(null,
-							"Your amount owed is $" + amountOwed + ".\nEnter payment amount:", "Payment",
-							JOptionPane.PLAIN_MESSAGE);
+					while (true) {
+						String input = JOptionPane.showInputDialog(null,
+								"Your amount owed is $" + amountOwed + ".\nEnter payment amount:", "Payment",
+								JOptionPane.PLAIN_MESSAGE);
 
-					if (input != null) {
-						try {
-							double payment = Double.parseDouble(input);
-							
+						if (input != null) {
+							try {
+								double payment = Double.parseDouble(input);
+
 								if (payment >= amountOwed) {
 									JOptionPane.showMessageDialog(null, "Payment received. Thank you!",
 											"Payment Successful", JOptionPane.INFORMATION_MESSAGE);
@@ -73,12 +76,12 @@ public class CustomerGUI {
 											"Insufficient payment. Please pay the full amount.", "Payment Failed",
 											JOptionPane.ERROR_MESSAGE);
 								}
-							
-						} catch (NumberFormatException e) {
-							JOptionPane.showMessageDialog(null, "Invalid input. Please enter a numeric value.", "Error",
-									JOptionPane.ERROR_MESSAGE);
+
+							} catch (NumberFormatException e) {
+								JOptionPane.showMessageDialog(null, "Invalid input. Please enter a numeric value.",
+										"Error", JOptionPane.ERROR_MESSAGE);
+							}
 						}
-					}
 					}
 				}
 			} catch (IOException | NumberFormatException e) {

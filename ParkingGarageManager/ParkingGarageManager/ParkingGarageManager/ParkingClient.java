@@ -81,21 +81,22 @@ public class ParkingClient {
 
         // Start customer GUI
         while (true) {
-            boolean printTicket = cgui.promptCustomerAction(); // Get customer action
-            if (printTicket) {
+            int printTicket = cgui.promptCustomerAction(); // Get customer action
+            if (printTicket==0) {
             	
             		cgui.displayGarageStatus(isGarageFull);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
             		if(!isGarageFull) {
                     cgui.printTicket(ticket); // This should create the Ticket_123.txt file
 
             	}
-            } else {
+            } else if(printTicket==1)  {
                 if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
                 	ticket.setPaidStatus(true);
                 }
                 
-            } 
-            break; // Exit remove one server is implemented
+            }else { 
+            	break; 
+            }// Exit remove one server is implemented
         }
     	
         request.write(3);
