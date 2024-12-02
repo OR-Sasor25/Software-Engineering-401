@@ -97,7 +97,7 @@ public class ParkingServer {
 							// All of these should be called from the client
 							switch(choice) {
 							case 0:
-								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers);
+								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, report);
 								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()-1].getTicketID());
 								break;
 							case 1: 
@@ -142,23 +142,26 @@ public class ParkingServer {
             }
 		}
 		
-		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers) {
-			if(local.checkSpace()) {
+		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, 
+				Garage local, Ticket[] Customers, GarageReports report){
 				try {
-					Ticket carIn = (Ticket)ois.readObject();
-					System.out.println("adding customer");
-					Customers[local.getSpacesTaken()] = carIn;
-					local.parkVehicle();
-					
+					boolean isFull = local.checkSpace();
+					oos.writeObject(local);
+					if(!isFull) {
+						Ticket carIn = (Ticket)ois.readObject();
+						System.out.println("adding customer");
+						Customers[local.getSpacesTaken()] = carIn;
+						local.parkVehicle();
+						report.setCarTracker();
+						System.out.println("Report updated");
+					}else {
+						System.out.println("Garrage is full!");
+					}
+						
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}	
-				
-
-			}else {
-				System.out.println("Garrage is full!");
-			}
-		}
+		}	
 		
 		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut){
 			try {
