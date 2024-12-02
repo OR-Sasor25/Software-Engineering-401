@@ -1,0 +1,43 @@
+package ParkingGarageTests;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class TestRunner {
+
+    public static void main(String[] args) {
+        System.out.println("Starting Test Suite...\n");
+
+        // Array of test classes
+        Class<?>[] testClasses = {TicketTest.class, GarageTest.class, GarageReportsTest.class};
+
+        // Loop through each test class and execute it
+        for (Class<?> testClass : testClasses) {
+            System.out.println("Running tests for: " + testClass.getSimpleName());
+
+            Result result = JUnitCore.runClasses(testClass);
+
+            // Print details for the current test class
+            System.out.println("Test class: " + testClass.getSimpleName());
+            System.out.println("Tests run: " + result.getRunCount());
+            System.out.println("Failures: " + result.getFailureCount());
+            System.out.println("Ignored: " + result.getIgnoreCount());
+
+            // Print details of failed tests
+            if (!result.wasSuccessful()) {
+                System.out.println("Failed tests:");
+                for (Failure failure : result.getFailures()) {
+                    System.out.println("  Test: " + failure.getTestHeader());
+                    System.out.println("  Reason: " + failure.getMessage());
+                }
+            } else {
+                System.out.println("All tests passed for: " + testClass.getSimpleName());
+            }
+
+            System.out.println(); // Blank line between test class results
+        }
+
+        System.out.println("Test Suite Completed.");
+    }
+}
