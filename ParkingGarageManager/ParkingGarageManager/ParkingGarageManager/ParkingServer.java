@@ -160,22 +160,51 @@ public class ParkingServer {
 					e.printStackTrace();
 				}	
 		}
-		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut){
-			try {
-				carOut = (Ticket)ois.readObject();
-				System.out.println("finding ticket");
-			
-			} catch (ClassNotFoundException e) {
-				
-				e.printStackTrace();
-			} catch (IOException e) {
-	
-				e.printStackTrace();
-			}
-			System.out.println("paying ticket");
-			
+		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut) {
+		    try {
+		        carOut = (Ticket) ois.readObject();
+		        System.out.println("Finding ticket...");
+
+		        // Search for the ticket in the Customers array
+		        Ticket foundTicket = null;
+		        for (Ticket customerTicket : Customers) {
+		            if (customerTicket != null && customerTicket.getTicketID() == carOut.getTicketID()) {
+		                foundTicket = customerTicket;
+		                break;
+		            }
+		        }
+
+		        if (foundTicket != null) {
+		            System.out.println("Ticket found: ");
+		            foundTicket.printTicket();
+
+		            // Define hourly rate
+		            double hourlyRate = 5.0; // Example rate: $5/hour
+
+		            // Calculate price and mark as paid
+		            foundTicket.calculatePrice(hourlyRate);
+		            foundTicket.setPaidStatus(true);
+
+		            System.out.println("Processing payment...");
+		            System.out.println("Payment successful! Ticket details:");
+		            foundTicket.printTicket();
+
+		            // Optionally send confirmation to client
+		            oos.writeObject("Payment successful for ticket ID: " + foundTicket.getTicketID());
+		        } else {
+		            System.out.println("Ticket not found.");
+		            oos.writeObject("Error: Ticket not found.");
+		        }
+
+		    } catch (ClassNotFoundException | IOException e) {
+		        e.printStackTrace();
+		        try {
+		            oos.writeObject("Error during payment process.");
+		        } catch (IOException ioException) {
+		            ioException.printStackTrace();
+		        }
+		    }
 		}
-		
 		private void doWriteReport(ObjectInputStream ois, ObjectOutputStream oos, GarageReports report) 
 		{
 		    try 
