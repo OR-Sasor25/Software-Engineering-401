@@ -43,6 +43,10 @@ public class GarageReports implements Serializable {
     }
 
     // updated to int from string - 11/30
+    public void setCarTracker() {
+    	this.carTracker = this.carTracker + 1;
+    }
+    
     public int getCarTracker(){
 
         return carTracker;
@@ -68,7 +72,6 @@ public class GarageReports implements Serializable {
     // Method to update payment summary and increment the car counter
     public void updatePaymentSummary(float fee) {
         paySummary = "Total earnings: " + fee;
-        carTracker++;
     }
 
     // Method to serialize the object to a stream
