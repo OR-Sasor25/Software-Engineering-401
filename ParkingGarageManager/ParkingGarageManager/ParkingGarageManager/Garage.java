@@ -1,7 +1,8 @@
 package ParkingGarageManager;
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Garage {
+public class Garage implements Serializable {
 	private final String garageID;
 	private int capacity;
 	private int spacesTaken;
