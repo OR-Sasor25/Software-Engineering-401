@@ -1,6 +1,8 @@
 package ParkingGarageManager;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Ticket {
     
@@ -57,7 +59,14 @@ public class Ticket {
     }
 
     // Method to calculate the price based on hours parked and rate
-    public void calculatePrice(double hoursParked, double ratePerHour) {
+    public void calculatePrice(double ratePerHour) {
+    	// Convert timeArrived string to LocalDateTime
+		LocalDateTime timeIn = LocalDateTime.parse(timeArrived, DateTimeFormatter.ISO_DATE_TIME);
+		// Calculate duration parked
+		Duration timeParked = Duration.between(timeIn, LocalDateTime.now());
+		// Convert to hours
+		long hoursParked = timeParked.toHours();
+		
         this.price = hoursParked * ratePerHour;
     }
 
