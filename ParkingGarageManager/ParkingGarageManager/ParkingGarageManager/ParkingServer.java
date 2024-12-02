@@ -143,7 +143,7 @@ public class ParkingServer {
 					System.out.println("adding customer");
 					Customers[local.getSpacesTaken()] = carIn;
 					local.parkVehicle();
-					report.
+					
 					
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();

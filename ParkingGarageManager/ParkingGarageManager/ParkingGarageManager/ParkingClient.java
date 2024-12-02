@@ -52,10 +52,9 @@ public class ParkingClient {
                 mgui.ManagerLoginUI(); // User enters login info
                 // Check user info against server or simulate check here
                 
-                //garageID is initialized to 0 but it should also be passed with a field
-                int garageID = 0;
+               
         		//Object that passes a login to server
-        		ManagerLogIn employeeOut = new ManagerLogIn(mgui.getEnteredUsername(),mgui.getEnteredPassword(), garageID);
+        		ManagerLogIn employeeOut = new ManagerLogIn(mgui.getEnteredUsername(),mgui.getEnteredPassword(), mgui.getEnteredGarageID());
         		oOStream.writeObject(employeeOut);
         		
         		//receives the validated login from the server
