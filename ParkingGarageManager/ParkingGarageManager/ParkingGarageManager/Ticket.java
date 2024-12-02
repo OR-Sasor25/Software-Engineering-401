@@ -6,14 +6,13 @@ import java.time.format.DateTimeFormatter;
 
 public class Ticket {
     
-    private int ticketID;
+    private static int ticketID;
     private double price;
     private boolean paidStatus;
     private String timeArrived;
     
-    public Ticket(int ticketID, double price) {
-        this.ticketID = ticketID;
-        this.price = price;
+    public Ticket() {
+        this.ticketID += 1;
         this.paidStatus = false;
         this.timeArrived = LocalDateTime.now().toString(); // Correct usage of LocalDateTime
     }
@@ -22,11 +21,7 @@ public class Ticket {
     public int getTicketID() {
         return ticketID;
     }
-
-    public void setTicketID(int ticketID) {
-        this.ticketID = ticketID;
-    }
-
+    
     public double getPrice() {
         return price;
     }
