@@ -58,6 +58,10 @@ public class ManagerGUI {
 		JOptionPane.showMessageDialog(null, "Invalid username or password. Access denied.", "Login Failed",
 				JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public void displayMessage(String message) {
+	    JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.INFORMATION_MESSAGE);
+	} 
 
 	public Boolean ManagerSelectionScreen() {
 		// Define options
