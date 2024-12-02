@@ -11,8 +11,9 @@ public class Ticket {
     private boolean paidStatus;
     private String timeArrived;
     
+    // Method to create a new ticket
     public Ticket() {
-        Ticket.ticketID += 1;
+        this.ticketID++;
         this.paidStatus = false;
         this.timeArrived = LocalDateTime.now().toString(); // Correct usage of LocalDateTime
     }
@@ -44,13 +45,6 @@ public class Ticket {
 
     public void setTimeArrived(String timeArrived) {
         this.timeArrived = timeArrived;
-    }
-    
-    // Method to create a new ticket
-    public void createTicket(int id, double initialPrice) {
-        this.ticketID = id;
-        this.price = initialPrice;
-        this.paidStatus = false;
     }
 
     // Method to calculate the price based on hours parked and rate
