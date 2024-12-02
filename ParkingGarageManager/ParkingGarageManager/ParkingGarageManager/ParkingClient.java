@@ -52,10 +52,9 @@ public class ParkingClient {
                 mgui.ManagerLoginUI(); // User enters login info
                 // Check user info against server or simulate check here
                 
-                //garageID is initialized to 0 but it should also be passed with a field
-                int garageID = 0;
+               
         		//Object that passes a login to server
-        		ManagerLogIn employeeOut = new ManagerLogIn(mgui.getEnteredUsername(),mgui.getEnteredPassword(), garageID);
+        		ManagerLogIn employeeOut = new ManagerLogIn(mgui.getEnteredUsername(),mgui.getEnteredPassword(), mgui.getEnteredGarageID());
         		oOStream.writeObject(employeeOut);
         		
         		//receives the validated login from the server
@@ -66,47 +65,37 @@ public class ParkingClient {
     	}while (employeeIn.getStatus().equals("inactive"));
         
 
-        // Manager's selection screen           
+        // Manager's selection screen
         while (true) {
             if (mgui.ManagerSelectionScreen()) {
-                try {
-                    // Send the request to the server to write the report
-                    request.write(2); 
-
-                    // recieve it
-                    String serverResponse = (String) oIStream.readObject();
-
-                    // display the server response to the user
-                    System.out.println("Server response: " + serverResponse);
-                    mgui.displayMessage(serverResponse); 
-
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    mgui.displayMessage("Error occurred while generating the report.");
-                }
+                // Handle the report printing (true from the manager screen)
+                // Add your report printing logic here
+            	request.write(2);
+            	GarageReports report = (GarageReports)oIStream.readObject();
+                mgui.printReport(report);
             } else {
-                break; // Exit the loop if transitioning to the customer interface
+                break; // Exit loop if customer interface should be started
             }
         }
 
-
         // Start customer GUI
         while (true) {
-            boolean printTicket = cgui.promptCustomerAction(); // Get customer action
-            if (printTicket) {
+            int printTicket = cgui.promptCustomerAction(); // Get customer action
+            if (printTicket==0) {
             	
             		cgui.displayGarageStatus(isGarageFull);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
             		if(!isGarageFull) {
                     cgui.printTicket(ticket); // This should create the Ticket_123.txt file
 
             	}
-            } else {
+            } else if(printTicket==1)  {
                 if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
                 	ticket.setPaidStatus(true);
                 }
                 
-            } 
-            break; // Exit remove one server is implemented
+            }else { 
+            	break; 
+            }// Exit remove one server is implemented
         }
     	
         request.write(3);
