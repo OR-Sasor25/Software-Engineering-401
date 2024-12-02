@@ -93,7 +93,7 @@ public class ParkingServer {
 							switch(choice) {
 							case 0:
 								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, report);
-								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()-1].getTicketID());
+								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()].getTicketID());
 								break;
 							case 1: 
 								Ticket carOut = (Ticket) oIStream.readObject();
