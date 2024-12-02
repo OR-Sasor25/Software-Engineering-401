@@ -1,19 +1,15 @@
 package ParkingGarageManager;
 
 import java.io.IOException;
-import java.io.File;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-
 
 
 public class ParkingServer {
@@ -35,8 +31,7 @@ public class ParkingServer {
 	}
 	
 	
-	private static class RequestHandler implements Runnable
-	{
+	private static class RequestHandler implements Runnable{
 		
 		private Socket socket;
 			RequestHandler(Socket socket){
@@ -97,7 +92,7 @@ public class ParkingServer {
 							// All of these should be called from the client
 							switch(choice) {
 							case 0:
-								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers);
+								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, report);
 								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()-1].getTicketID());
 								break;
 							case 1: 
@@ -142,24 +137,26 @@ public class ParkingServer {
             }
 		}
 		
-		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers) {
-			if(local.checkSpace()) {
+		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, 
+				Garage local, Ticket[] Customers, GarageReports report){
 				try {
-					Ticket carIn = (Ticket)ois.readObject();
-					System.out.println("adding customer");
-					Customers[local.getSpacesTaken()] = carIn;
-					local.parkVehicle();
-					
+					boolean isFull = local.checkSpace();
+					oos.writeObject(local);
+					if(!isFull) {
+						Ticket carIn = (Ticket)ois.readObject();
+						System.out.println("adding customer");
+						Customers[local.getSpacesTaken()] = carIn;
+						local.parkVehicle();
+						report.setCarTracker();
+						System.out.println("Report updated");
+					}else {
+						System.out.println("Garrage is full!");
+					}
+						
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}	
 				
-
-			}else {
-				System.out.println("Garrage is full!");
-			}
-		}
-		
 		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut){
 			try {
 				carOut = (Ticket)ois.readObject();
@@ -176,35 +173,9 @@ public class ParkingServer {
 			
 		}
 		
-		private void doWriteReport(ObjectInputStream ois, ObjectOutputStream oos, GarageReports report) 
-		{
-		    try 
-		    {
-		        // Fetch the report details
-		        String reportDetails = report.toString();
-
-		        // Write the report to a file
-		        String filename = "GarageReport_" + report.getID() + ".txt";
-		        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) 
-		        {
-		            writer.println(reportDetails);
-		        }
-
-		        // Confirm bck to the client 
-		        System.out.println("Report written to: " + new File(filename).getAbsolutePath());
-;
-		    } 
-		    catch (IOException e) 
-		    {
-		        try 
-		        {
-		            oos.writeObject("Failed to write the report.");
-		        } catch (IOException ex) 
-		        {
-		            ex.printStackTrace();
-		        }
-		        e.printStackTrace();
-		    }
+		private void doWriteReport(ObjectInputStream ois, ObjectOutputStream oos, GarageReports report) {
+			
+			System.out.println("writing report");
 		}
-    }
+	}
 }
