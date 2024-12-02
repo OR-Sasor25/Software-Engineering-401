@@ -67,11 +67,6 @@ public class Ticket {
     }
 
 
-    // Method to print ticket details
-    public void printTicket() {
-        System.out.println("The ticket ID is: " + ticketID);
-        System.out.println("The total price is: $" + price);
-    }
     // Method to calculate the price based on hours parked and rate
     public void calculatePrice(double ratePerHour) {
     	// Convert timeArrived string to LocalDateTime
