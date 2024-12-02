@@ -92,8 +92,8 @@ public class ParkingClient {
 
         // Start customer GUI
         while (true) {
-            int printTicket = cgui.promptCustomerAction(); // Get customer action
-            if (printTicket == 0) {
+            boolean printTicket = cgui.promptCustomerAction(); // Get customer action
+            if (printTicket) {
             	
             		cgui.displayGarageStatus(isGarageFull);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
             		if(!isGarageFull) {
