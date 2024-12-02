@@ -68,17 +68,27 @@ public class ParkingClient {
         
 
         // Manager's selection screen
-        while (true) {
-            if (mgui.ManagerSelectionScreen()) {
-                // Handle the report printing (true from the manager screen)
-                // Add your report printing logic here
-            	request.write(2);
-            	GarageReports report = (GarageReports)oIStream.readObject();
-                mgui.printReport(report);
-            } else {
-                break; // Exit loop if customer interface should be started
+            while (true) {
+                if (mgui.ManagerSelectionScreen()) {
+                    try {
+                        // Send the request to the server to write the report
+                        request.write(2); 
+
+                        // receve it
+                        String serverResponse = (String) oIStream.readObject();
+
+                        // display the server response to the user
+                        System.out.println("Server response: " + serverResponse);
+                        mgui.displayMessage(serverResponse); 
+
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                        mgui.displayMessage("Error occurred while generating the report.");
+                    }
+                } else {
+                    break; // Exit the loop if transitioning to the customer interface
+                }
             }
-        }
 
         // Start customer GUI
         while (true) {
