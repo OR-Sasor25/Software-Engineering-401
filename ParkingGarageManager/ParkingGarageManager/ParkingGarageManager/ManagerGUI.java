@@ -1,23 +1,23 @@
 package ParkingGarageManager;
-
 import javax.swing.*;
 
 public class ManagerGUI {
 	private String enteredUsername;
 	private String enteredPassword;
-
+	private int enteredGarageID;
 	public ManagerGUI() {
 
 	}
-
 	public String getEnteredUsername() {
 		return enteredUsername;
 	}
-
 	public String getEnteredPassword() {
 		return enteredPassword;
 	}
 
+	public int getEnteredGarageID() {
+		return enteredGarageID;
+	}
 	public void ManagerLoginUI() {
 		// Create a JPanel to hold the input fields
 		JPanel panel = new JPanel();
@@ -33,6 +33,11 @@ public class ManagerGUI {
 		panel.add(new JLabel("Password:"));
 		panel.add(passwordField);
 
+		// Add garage id field
+		JTextField garageIDField = new JTextField(15); // Use JTextField for numeric input
+		panel.add(new JLabel("Garage ID:"));
+		panel.add(garageIDField);
+
 		// Show the dialog with the panel
 		int option = JOptionPane.showConfirmDialog(null, panel, "Manager Login", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE);
@@ -41,19 +46,18 @@ public class ManagerGUI {
 		if (option == JOptionPane.OK_OPTION) {
 			enteredUsername = usernameField.getText();
 			enteredPassword = new String(passwordField.getPassword());
+			try {
+				enteredGarageID = Integer.parseInt(garageIDField.getText()); // Correctly parse integer
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Invalid Garage ID. Please enter a numeric value.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
-
 	public void failedLogin() {
 		JOptionPane.showMessageDialog(null, "Invalid username or password. Access denied.", "Login Failed",
 				JOptionPane.ERROR_MESSAGE);
 	}
-	
-	public void displayMessage(String message) 
-	{
-	    JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.INFORMATION_MESSAGE);
-	}
-
 
 	public Boolean ManagerSelectionScreen() {
 		// Define options
