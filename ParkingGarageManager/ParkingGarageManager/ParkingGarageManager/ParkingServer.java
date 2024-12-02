@@ -45,8 +45,7 @@ public class ParkingServer {
 				ObjectInputStream oIStream = new ObjectInputStream(socket.getInputStream());
 				InputStream request = (socket.getInputStream());
 				boolean canLogOut = false;
-				//Should be used in payTicket
-				ParkingSystem location = new ParkingSystem(7.50f);
+				//creates a new report object that will be updated with the methods included 
 				GarageReports report = new GarageReports();
 				ManagerLogIn employee;
 				do {
@@ -97,7 +96,7 @@ public class ParkingServer {
 								break;
 							case 1: 
 								Ticket carOut = (Ticket) oIStream.readObject();
-								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, carOut , location);
+								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, carOut);
 								break;
 							case 2:	
 								doWriteReport(report);
@@ -155,7 +154,7 @@ public class ParkingServer {
 			}
 		}
 		
-		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut, ParkingSystem location){
+		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut){
 			try {
 				carOut = (Ticket)ois.readObject();
 				System.out.println("finding ticket");
