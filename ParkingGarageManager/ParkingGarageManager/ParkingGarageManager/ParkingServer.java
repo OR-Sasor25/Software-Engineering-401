@@ -143,20 +143,21 @@ public class ParkingServer {
 					boolean isFull = local.checkSpace();
 					oos.writeObject(local);
 					if(!isFull) {
-						Ticket carIn = (Ticket)ois.readObject();
+						Ticket carIn = new Ticket();
 						System.out.println("adding customer");
 						Customers[local.getSpacesTaken()] = carIn;
 						local.parkVehicle();
 						report.setCarTracker();
 						System.out.println("Report updated");
+						oos.writeObject(carIn);
 					}else {
 						System.out.println("Garrage is full!");
 					}
 						
-				} catch (ClassNotFoundException | IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}	
-				
+		}
 		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut){
 			try {
 				carOut = (Ticket)ois.readObject();

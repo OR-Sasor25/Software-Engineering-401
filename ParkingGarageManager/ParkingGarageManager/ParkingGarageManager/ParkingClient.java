@@ -27,11 +27,13 @@ public class ParkingClient {
         // Test code without server
         ManagerGUI mgui = new ManagerGUI();
         CustomerGUI cgui = new CustomerGUI();
-        //these should be passed through server
+        //test code that demonstrated the passing data to server 
+        /*
         String managerUsername = "manager";
         String managerPassword = "password";
         Boolean isGarageFull=false;
         Ticket ticket = new Ticket(123, 15.50); // Ticket with ID 123 and price $15.50
+        */
         
         //Initializes Client with server address
         Scanner scan = new Scanner(System.in);
@@ -82,15 +84,16 @@ public class ParkingClient {
         while (true) {
             int printTicket = cgui.promptCustomerAction(); // Get customer action
             if (printTicket==0) {
-            	
-            		cgui.displayGarageStatus(isGarageFull);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
-            		if(!isGarageFull) {
-                    cgui.printTicket(ticket); // This should create the Ticket_123.txt file
-
-            	}
+            		request.write(0);
+            		Garage status = (Garage)oIStream.readObject();
+            		cgui.displayGarageStatus(status.checkSpace());//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
+            		if(!status.checkSpace()) {
+            			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
+            			cgui.printTicket(Customer);
+                    }
             } else if(printTicket==1)  {
                 if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
-                	ticket.setPaidStatus(true);
+                	//implement pay ticket here
                 }
                 
             }else { 

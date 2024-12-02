@@ -12,7 +12,7 @@ public class Ticket {
     private String timeArrived;
     
     public Ticket() {
-        this.ticketID += 1;
+        Ticket.ticketID += 1;
         this.paidStatus = false;
         this.timeArrived = LocalDateTime.now().toString(); // Correct usage of LocalDateTime
     }
