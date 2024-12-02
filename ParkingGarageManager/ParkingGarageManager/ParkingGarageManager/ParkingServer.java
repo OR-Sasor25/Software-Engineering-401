@@ -1,5 +1,7 @@
 package ParkingGarageManager;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -174,9 +176,35 @@ public class ParkingServer {
 			
 		}
 		
-		private void doWriteReport(ObjectInputStream ois, ObjectOutputStream oos, GarageReports report) {
-			
-			System.out.println("writing report");
+		private void doWriteReport(ObjectInputStream ois, ObjectOutputStream oos, GarageReports report) 
+		{
+		    try 
+		    {
+		        // Fetch the report details
+		        String reportDetails = report.toString();
+
+		        // Write the report to a file
+		        String filename = "GarageReport_" + report.getID() + ".txt";
+		        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) 
+		        {
+		            writer.println(reportDetails);
+		        }
+
+		        // Confirm back to the client 
+		        oos.writeObject("Report written successfully to " + filename);
+		        System.out.println("Report written to: " + new File(filename).getAbsolutePath());
+		    } 
+		    catch (IOException e) 
+		    {
+		        try 
+		        {
+		            oos.writeObject("Failed to write the report.");
+		        } catch (IOException ex) 
+		        {
+		            ex.printStackTrace();
+		        }
+		        e.printStackTrace();
+		    }
 		}
-	}
+    }
 }
