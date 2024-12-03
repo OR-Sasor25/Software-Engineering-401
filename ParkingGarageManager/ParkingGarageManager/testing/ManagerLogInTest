@@ -1,55 +1,58 @@
-package ParkingGarageTests;
+package ParkingGarageManager;
 
-import ParkingGarageManager.ManagerLogIn;
-import static org.junit.Assert.*;
+import java.io.Serializable;
 
-import org.junit.Before;
-import org.junit.Test;
+public class ManagerLogIn implements Serializable{
+    private final String id; 
+    private final String password; 
+    private String status; 
+    private final int garageID; 
 
-public class ManagerLogInTest {
-
-    private ManagerLogIn manager;
-
-    @Before
-    public void setUp() {
-        manager = new ManagerLogIn("admin", "password123", 1); // Initialize a ManagerLogIn object
+   
+    public ManagerLogIn(String id, String password, int garageID) {
+        this.id = id;
+        this.password = password;
+        this.status = "inactive"; // <---THIS IS THE DEFAULT SET 
+        this.garageID = garageID;
     }
 
-    @Test
-    public void testConstructorInitialization() {
-        assertEquals("admin", manager.getId());
-        assertEquals("password123", manager.getPassword());
-        assertEquals("inactive", manager.getStatus());
-        assertEquals(1, manager.getGarageID());
+    // getters/setters
+    public String getId() {
+        return id;
     }
 
-    @Test
-    public void testSetStatus() {
-        manager.setStatus("active");
-        assertEquals("active", manager.getStatus());
+    public String getPassword() {
+        return password;
     }
 
-    @Test
-    public void testValidateLogin_Valid() {
-        manager.validateLogin(true);
-        assertEquals("active", manager.getStatus());
+    public String getStatus() {
+        return status;
     }
 
-    @Test
-    public void testValidateLogin_Invalid() {
-        manager.validateLogin(false);
-        assertEquals("inactive", manager.getStatus());
+    public int getGarageID() {
+        return garageID;
     }
 
-    @Test
-    public void testSelectGarage_Active() {
-        manager.validateLogin(true); // Log in the manager
-        manager.selectGarage(2); // This will print a message; manually observe console output
+    // only setter for status
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    @Test
-    public void testSelectGarage_Inactive() {
-        manager.validateLogin(false); // Ensure manager is not logged in
-        manager.selectGarage(3); // This will print "Log in first!" in the console
+    // method to validate login (sets the status to "active" if valid)
+    public void validateLogin(boolean isValid) {
+        if (isValid) {
+            this.status = "active";
+        } else {
+            this.status = "inactive";
+        }
+    }
+
+    // method to select garage
+    public void selectGarage(int garageID) {
+        if ("active".equals(this.status)) { //this is to make sure manager is logged in
+            System.out.println("Garage ID " + garageID + " is selected.");
+        } else {
+            System.out.println("Log in first!");
+        }
     }
 }
