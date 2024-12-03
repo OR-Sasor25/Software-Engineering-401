@@ -155,7 +155,7 @@ public class ParkingServer {
 						report.setCarTracker();
 						System.out.println("Report updated");
 						oos.writeObject(carIn);
-						System.out.println("Parking customer " + Customers[local.getSpacesTaken()].getTicketID());
+						System.out.println("Parking customer " + carIn.getTicketID());
 					}else{
 						System.out.println("Garrage is full!");
 					}

@@ -88,41 +88,42 @@ public class ParkingClient {
                     }
                 } else if(managerChoice==1){
                 	  // Start customer GUI
-                    while (true) {
-                        int printTicket = cgui.promptCustomerAction(); // Get customer action
-                        if (printTicket==0) {
-                        		request.write(0);
-                        		Garage status = (Garage)oIStream.readObject();
-                        		cgui.displayGarageStatus(status.checkSpace());//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
-                        		if(!status.checkSpace()) {
-                        			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
-                        			cgui.printTicket(Customer);
-                                }
-                        } else if(printTicket==1)  {
-                            if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
-                            	//implement pay ticket here
-                            }
-                            
-                        }else { 
-                        	break; 
-                        }// Exit remove one server is implemented
-                    }
+                	 while (true) {
+                         int printTicket = cgui.promptCustomerAction(); // Get customer action
+                         if (printTicket==0) {
+                         		request.write(0);
+                         		Garage status = (Garage)oIStream.readObject();
+                         		cgui.displayGarageStatus(status.checkSpace());
+                         		System.out.println(status.checkSpace());
+                         		if(status.checkSpace() == false) {
+                         			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
+                         			cgui.printTicket(Customer);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
+                                 }
+                         } else if(printTicket==1)  {
+                             if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
+                             	//implement pay ticket here
+                            	 request.write(1);
+                             }
+                             
+                         }else { 
+                         	break;
+                         }// Exit remove one server is implemented
+                         
+                     }
+                } else {
                 	
-                    //break; // Exit the loop if transitioning to the customer interface
-                }else {
-                	break;
+                	request.write(3);
                 }
-            }
-
-      
-        request.write(3);
-    	} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+                
+            }   
+    	}catch (IOException e1) {
+         // TODO Auto-generated catch block
+             e1.printStackTrace();
+        } catch (ClassNotFoundException e) {
+        // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
+       
 

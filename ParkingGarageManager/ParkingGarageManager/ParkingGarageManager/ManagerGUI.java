@@ -65,7 +65,7 @@ public class ManagerGUI {
 
 	public int ManagerSelectionScreen() {
 	    // Define options
-	    String[] options = { "Print Report", "Turn On Customer GUI" };
+	    String[] options = { "Print Report", "Turn On Customer GUI" , "Logout"};
 
 	    // Show the dialog
 	    int choice = JOptionPane.showOptionDialog(null, "Welcome, " + enteredUsername + "!\nSelect an option:",
@@ -78,6 +78,8 @@ public class ManagerGUI {
 	    } else if (choice == 1) {
 	        // Turn On Customer GUI selected
 	        return 1;
+	    }else {
+	    	return 2;
 	    }
 
 	    // Return 2 if the dialog is closed without selection (e.g., "X" pressed)
