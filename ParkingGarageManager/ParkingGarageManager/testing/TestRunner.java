@@ -1,7 +1,8 @@
-package testing;
+package ParkingGarageTests;
 
-import org.junit.runner.*;
-
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
 public class TestRunner {
 
@@ -47,6 +48,11 @@ public class TestRunner {
             // Print details of failed tests
             if (!result.wasSuccessful()) {
                 System.out.println("\nFailed tests:");
+                for (Failure failure : result.getFailures()) {
+                    System.out.println("  Test: " + failure.getTestHeader());
+                    System.out.println("  Reason: " + failure.getMessage());
+                    System.out.println("  Stack Trace: " + failure.getTrace());
+                }
             } else {
                 System.out.println("All tests passed for: " + testClass.getSimpleName());
             }
@@ -70,6 +76,8 @@ public class TestRunner {
             System.out.println("All tests passed successfully!");
         } else {
             System.out.println("Some tests failed. Review the output above.");
+            System.out.println("Detailed failure information provided for debugging.");
         }
     }
 }
+
