@@ -27,7 +27,7 @@ public class CustomerGUI {
 
 	// Display welcome message or say Garage Full
 	public void displayGarageStatus(boolean isGarageFull) {
-		if (isGarageFull) {
+		if (!isGarageFull) {
 			JOptionPane.showMessageDialog(null, "Sorry, the garage is full.", "Garage Full",
 					JOptionPane.WARNING_MESSAGE);
 		} else {

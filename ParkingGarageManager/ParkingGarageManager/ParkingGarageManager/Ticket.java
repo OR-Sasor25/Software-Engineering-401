@@ -1,12 +1,13 @@
 package ParkingGarageManager;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Ticket {
+public class Ticket implements Serializable{
     
-    private static int ticketID = 0;
+    private static int ticketID;
     private double price;
     private boolean paidStatus;
     private String timeArrived;

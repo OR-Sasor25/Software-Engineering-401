@@ -13,13 +13,10 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
-
 public class ParkingServer {
 		//hard coded employee credentials
 	    static String managerUsername = "manager";
         static String managerPassword = "password";
-        static Garage[] Garages = new Garage[10];
-        
         
 	public static void main(String[] args) throws Exception{
 		try (var listener = new ServerSocket(59898)) {
@@ -47,7 +44,15 @@ public class ParkingServer {
 				ObjectOutputStream oOStream = new ObjectOutputStream(socket.getOutputStream());
 				ObjectInputStream oIStream = new ObjectInputStream(socket.getInputStream());
 				InputStream request = (socket.getInputStream());
+				
+				Garage garage1 = new Garage(10);
+				Garage garage2 = new Garage(15);
+				Garage garage3 = new Garage(20);
+				Garage garage4 = new Garage(25);
+				Garage garage5 = new Garage(6);
+				Garage[] Garages = {garage1, garage2, garage3, garage4, garage5};
 				boolean canLogOut = false;
+				int garageID;
 				//creates a new report object that will be updated with the methods included 
 				GarageReports report = new GarageReports();
 				ManagerLogIn employee;
@@ -60,7 +65,7 @@ public class ParkingServer {
 						System.out.println("Login was cancelled, terminating conection");
 						
 					}//if the attributes of employee match managerUsername and managerPassword allow the employee to modify a garage
-					else if(employee.getId().equals(managerUsername) && employee.getPassword().equals(managerPassword) && employee.getGarageID() < 10 
+					else if(employee.getId().equals(managerUsername) && employee.getPassword().equals(managerPassword) && employee.getGarageID() < 5 
 							&& employee.getGarageID() >= 0) {
 						canLogOut = true;
 						
@@ -69,12 +74,11 @@ public class ParkingServer {
 						oOStream.writeObject(employee);
 						System.out.println("login succesfull!");
 						
+						//initialize garageID
+						garageID = employee.getGarageID();
+
 						//initializes a new garage object if one does not exist at the requested index of Garages[]
-						if(Garages[employee.getGarageID()] == null) {
-							Garages[employee.getGarageID()] = new Garage(10);
-						}
-						
-						Ticket[] Customers = new Ticket[Garages[employee.getGarageID()].getCapacity()];
+						Ticket[] Customers = new Ticket[Garages[garageID].getCapacity()];
 						
 						//request are passed to choice as an int
 						int choice;
@@ -94,12 +98,11 @@ public class ParkingServer {
 							// All of these should be called from the client
 							switch(choice) {
 							case 0:
-								doAddTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, report);
-								System.out.println("Parking customer " + Customers[Garages[employee.getGarageID()].getSpacesTaken()].getTicketID());
+								doAddTicket(oIStream, oOStream, Garages[garageID], Customers, report);
 								break;
 							case 1: 
 								Ticket carOut = (Ticket) oIStream.readObject();
-								doPayTicket(oIStream, oOStream, Garages[employee.getGarageID()], Customers, carOut);
+								doPayTicket(oIStream, oOStream, Garages[garageID], Customers, carOut);
 								break;
 							case 2:	
 								doWriteReport(oIStream, oOStream, report);
@@ -114,7 +117,7 @@ public class ParkingServer {
 							}
 							
 						}while(running);
-					}else if(employee.getGarageID() > 10 || employee.getGarageID() < 0){
+					}else if(employee.getGarageID() > 5 || employee.getGarageID() < 0){
 						System.out.println("Invalid Garage ID");
 						oOStream.writeObject(employee);
 					}else {
@@ -142,9 +145,9 @@ public class ParkingServer {
 		private void doAddTicket(ObjectInputStream ois, ObjectOutputStream oos, 
 				Garage local, Ticket[] Customers, GarageReports report){
 				try {
-					boolean isFull = local.checkSpace();
+					
 					oos.writeObject(local);
-					if(!isFull) {
+					if(local.checkSpace()){
 						Ticket carIn = new Ticket();
 						System.out.println("adding customer");
 						Customers[local.getSpacesTaken()] = carIn;
@@ -152,7 +155,8 @@ public class ParkingServer {
 						report.setCarTracker();
 						System.out.println("Report updated");
 						oos.writeObject(carIn);
-					}else {
+						System.out.println("Parking customer " + Customers[local.getSpacesTaken()].getTicketID());
+					}else{
 						System.out.println("Garrage is full!");
 					}
 						
