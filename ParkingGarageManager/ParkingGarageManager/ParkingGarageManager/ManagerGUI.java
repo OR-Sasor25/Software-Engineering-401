@@ -48,8 +48,14 @@ public class ManagerGUI {
 			enteredPassword = new String(passwordField.getPassword());
 			try {
 				enteredGarageID = Integer.parseInt(garageIDField.getText()); // Correctly parse integer
+				if(enteredGarageID < 0 || enteredGarageID > 4) {
+					throw new Exception();
+				}
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Invalid Garage ID. Please enter a numeric value.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Invalid Garage ID. Garage ID is not between 0 and 4", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}

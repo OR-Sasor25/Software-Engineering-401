@@ -95,9 +95,11 @@ public class ParkingClient {
                          		Garage status = (Garage)oIStream.readObject();
                          		cgui.displayGarageStatus(status.checkSpace());
                          		System.out.println(status.checkSpace());
-                         		if(status.checkSpace() == false) {
+                         		if(status.checkSpace() == true) {
                          			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
                          			cgui.printTicket(Customer);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
+                                 }else {
+                                	 
                                  }
                          } else if(printTicket==1)  {
                              if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
