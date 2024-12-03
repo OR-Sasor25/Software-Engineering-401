@@ -1,10 +1,10 @@
-package testing;
+package ParkingGarageTests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import ParkingGarageManager.Ticket;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,25 +13,32 @@ public class TicketTest {
 
     private Ticket ticket;
 
-    @BeforeEach
+    @Before
     public void setUp() {
-        ticket = new Ticket(); // Initialize a Ticket with ticketID 1 and price 20.0
+        // Initialize a Ticket object with ticketID 1 and initial price 20.0
+        ticket = new Ticket(1, 20.0);
     }
 
     @Test
     public void testGetTicketID() {
-        assertEquals(0, ticket.getTicketID());
+        assertEquals(1, ticket.getTicketID());
+    }
+
+    @Test
+    public void testSetTicketID() {
+        ticket.setTicketID(2);
+        assertEquals(2, ticket.getTicketID());
     }
 
     @Test
     public void testGetPrice() {
-        assertEquals(20.0, ticket.getPrice());
+        assertEquals(20.0, ticket.getPrice(), 0.01);
     }
 
     @Test
     public void testSetPrice() {
         ticket.setPrice(30.0);
-        assertEquals(30.0, ticket.getPrice());
+        assertEquals(30.0, ticket.getPrice(), 0.01);
     }
 
     @Test
@@ -59,9 +66,11 @@ public class TicketTest {
     }
 
     @Test
-    public void testCalculatePriceWithHoursAndRate() {
-        ticket.calculatePrice(5); // 5 hours at $10/hour
-        assertEquals(50.0, ticket.getPrice());
+    public void testCreateTicket() {
+        ticket.createTicket(5, 50.0);
+        assertEquals(5, ticket.getTicketID());
+        assertEquals(50.0, ticket.getPrice(), 0.01);
+        assertFalse(ticket.isPaidStatus());
     }
 
     @Test
@@ -76,8 +85,8 @@ public class TicketTest {
 
     @Test
     public void testPrintTicket() {
-        ticket.setPaidStatus(false);
-        ticket.printTicket(); // Manually observe printed output in the console
+        // Test the output of printTicket (manually observe the console output)
+        ticket.printTicket();
     }
 }
 
