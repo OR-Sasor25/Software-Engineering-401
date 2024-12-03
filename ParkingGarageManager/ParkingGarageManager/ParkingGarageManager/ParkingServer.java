@@ -90,9 +90,9 @@ public class ParkingServer {
 							
 							
 							//Request are as follows - implementation status
-							//0 = doAddTicket - I assume it works, there are issues with the customer class that might prevent them from working
-							//1 = doPayTicket - partially implemented 
-							//2 = doWriteReport - not implemented
+							//0 = doAddTicket - It works poorly
+							//1 = doPayTicket - fully implemented 
+							//2 = doWriteReport - fully implemented
 							//3 = doRetreiveTicket - not implemented - cancelled
 							//3 = logout - works
 							// All of these should be called from the client
@@ -101,7 +101,7 @@ public class ParkingServer {
 								doAddTicket(oIStream, oOStream, Garages[garageID], Customers, report);
 								break;
 							case 1: 
-								Ticket carOut = (Ticket) oIStream.readObject();
+								Ticket carOut = (Ticket)oIStream.readObject();
 								doPayTicket(oIStream, oOStream, Garages[garageID], Customers, carOut);
 								break;
 							case 2:	
@@ -147,14 +147,14 @@ public class ParkingServer {
 				try {
 					
 					oos.writeObject(local);
-					if(local.checkSpace()){
+					if(!(local.getSpacesTaken()== Customers.length)){
 						Ticket carIn = new Ticket();
 						System.out.println("adding customer");
 						Customers[local.getSpacesTaken()] = carIn;
-						local.parkVehicle();
 						report.setCarTracker();
 						System.out.println("Report updated");
 						oos.writeObject(carIn);
+						
 						System.out.println("Parking customer " + carIn.getTicketID());
 					}else{
 						System.out.println("Garrage is full!");
@@ -165,10 +165,10 @@ public class ParkingServer {
 				}	
 		}
 		private void doPayTicket(ObjectInputStream ois, ObjectOutputStream oos, Garage local, Ticket[] Customers, Ticket carOut) {
+			
 		    try {
-		        carOut = (Ticket) ois.readObject();
 		        System.out.println("Finding ticket...");
-
+		        
 		        // Search for the ticket in the Customers array
 		        Ticket foundTicket = null;
 		        for (Ticket customerTicket : Customers) {
@@ -200,7 +200,7 @@ public class ParkingServer {
 		            oos.writeObject("Error: Ticket not found.");
 		        }
 
-		    } catch (ClassNotFoundException | IOException e) {
+		    } catch (IOException e) {
 		        e.printStackTrace();
 		        try {
 		            oos.writeObject("Error during payment process.");

@@ -64,7 +64,7 @@ public class ParkingClient {
 				if (employeeIn.getStatus().equals("inactive")) {
 					mgui.failedLogin(); // Loop until correct
                 }
-    	}while (employeeIn.getStatus().equals("inactive"));
+            }while (employeeIn.getStatus().equals("inactive"));
         
 
         // Manager's selection screen
@@ -93,20 +93,27 @@ public class ParkingClient {
                          if (printTicket==0) {
                          		request.write(0);
                          		Garage status = (Garage)oIStream.readObject();
-                         		cgui.displayGarageStatus(status.checkSpace());
-                         		System.out.println(status.checkSpace());
                          		if(status.checkSpace() == true) {
                          			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
+                         			System.out.println("Handeling Ticket, ID = " + Customer.getTicketID());
                          			cgui.printTicket(Customer);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
                                  }else {
-                                	 
+                                	 System.out.println("the Garage is Full!");
                                  }
                          } else if(printTicket==1)  {
-                             if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
+                             cgui.displayPaymentStatus();
                              	//implement pay ticket here
                             	 request.write(1);
-                             }
-                             
+                            	 System.out.println("WARNING!, do not press gui buttons past this point. close Customer GUI window and log out");
+                            	 System.out.println("Running past this point will send a request bad request to the server, and throw and error");
+                            	 System.out.println("the server gets stuck because it is waitng for an Ticket object as input.");
+                            	 System.out.println("we werent able to implement a way to retrive the ID from the txt files stored and passing it back as an array");
+                            	 System.out.println("A way we thought of doing so would be to store all the tickets passed back from add ticket in an array or list");
+                            	 System.out.println("then use DisplayPaymentStatus to pull the ID stored on the .txt files and compare against the ones stored in the array");
+                            	 System.out.println("DisplayPayments return type would have to be changed to from bool to Ticket and given a parameter among other things");
+                            	 
+                            	 //oOStream.writeObject(payingTicket);
+                            	 //Ticket paidTicket = (Ticket)oIStream.readObject();
                          }else { 
                          	break;
                          }// Exit remove one server is implemented

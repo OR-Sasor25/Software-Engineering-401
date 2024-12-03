@@ -7,14 +7,15 @@ import java.time.format.DateTimeFormatter;
 
 public class Ticket implements Serializable{
     
-    private static int ticketID;
+    static private int count; 
+    private int ticketID;
     private double price;
     private boolean paidStatus;
     private String timeArrived;
     
     // Method to create a new ticket
     public Ticket() {
-        this.ticketID++;
+        this.ticketID = count++;
         this.paidStatus = false;
         this.timeArrived = LocalDateTime.now().toString(); // Correct usage of LocalDateTime
     }
@@ -23,7 +24,7 @@ public class Ticket implements Serializable{
     public int getTicketID() {
         return ticketID;
     }
-    
+  
     public double getPrice() {
         return price;
     }
@@ -35,7 +36,6 @@ public class Ticket implements Serializable{
     public boolean isPaidStatus() {
         return paidStatus;
     }
-
     public void setPaidStatus(boolean paidStatus) {
         this.paidStatus = paidStatus;
     }

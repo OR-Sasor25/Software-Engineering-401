@@ -27,7 +27,7 @@ public class CustomerGUI {
 
 	// Display welcome message or say Garage Full
 	public void displayGarageStatus(boolean isGarageFull) {
-		if (!isGarageFull) {
+		if (isGarageFull == true) {
 			JOptionPane.showMessageDialog(null, "Sorry, the garage is full.", "Garage Full",
 					JOptionPane.WARNING_MESSAGE);
 		} else {
@@ -37,18 +37,20 @@ public class CustomerGUI {
 	}
 
 	// Display amount owed and ticket paid status based on file selection
-	public Boolean displayPaymentStatus() {
+	public boolean displayPaymentStatus() {
+		String ticketID = null;
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Select a Ticket File");
 
 		// Open the file chooser dialog
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
+			
 			File selectedFile = fileChooser.getSelectedFile();
 
 			try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
 				// Read ticket data from the file
-				String ticketID = reader.readLine();
+				ticketID = reader.readLine();
 				double amountOwed = Double.parseDouble(reader.readLine());
 				boolean isTicketPaid = reader.readLine().equalsIgnoreCase("Yes");
 
@@ -70,7 +72,7 @@ public class CustomerGUI {
 									JOptionPane.showMessageDialog(null, "Payment received. Thank you!",
 											"Payment Successful", JOptionPane.INFORMATION_MESSAGE);
 									return true;
-									// how do i change ticket paid status :/ is it even worth it?
+						
 								} else {
 									JOptionPane.showMessageDialog(null,
 											"Insufficient payment. Please pay the full amount.", "Payment Failed",
@@ -95,19 +97,18 @@ public class CustomerGUI {
 
 	// Method to print ticket to a .txt file
 	public void printTicket(Ticket ticket) {
+		// Create a new file with the ticket ID as the filename
+		File ticketFile = new File("Ticket_ "+ ticket.getTicketID() + ".txt");
 		try {
-			// Create a new file with the ticket ID as the filename
-			File ticketFile = new File("Ticket_" + ticket.getTicketID() + ".txt");
-			if (ticketFile.createNewFile()) {
 				FileWriter writer = new FileWriter(ticketFile);
 				// Write ticket details to the file
 				writer.write(ticket.getTicketID() + "\n");
 				writer.write(ticket.getPrice() + "\n");
 				writer.write((ticket.isPaidStatus() ? "Yes" : "No") + "\n");
 				writer.close();
-				JOptionPane.showMessageDialog(null, "Ticket has been printed to: " + ticketFile.getName(),
+				JOptionPane.showMessageDialog(null, "Ticket has been printed to: " + ticketFile.getName() + ticketFile.getAbsolutePath(),
 						"Ticket Printed", JOptionPane.INFORMATION_MESSAGE);
-			}
+				
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "An error occurred while printing the ticket.", "Error",
 					JOptionPane.ERROR_MESSAGE);
