@@ -83,7 +83,6 @@ public class ManagerGUI {
 	    }
 
 	    // Return 2 if the dialog is closed without selection (e.g., "X" pressed)
-	    return 2;
 	}
 
 	// Method to handle the Print Report action

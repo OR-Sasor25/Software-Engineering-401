@@ -110,9 +110,9 @@ public class ParkingClient {
                          }// Exit remove one server is implemented
                          
                      }
-                } else {
-                	
+                }else {
                 	request.write(3);
+                	break;
                 }
                 
             }   
