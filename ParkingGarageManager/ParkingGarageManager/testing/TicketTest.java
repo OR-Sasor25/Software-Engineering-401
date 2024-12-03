@@ -1,0 +1,83 @@
+package testing;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ParkingGarageManager.Ticket;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class TicketTest {
+
+    private Ticket ticket;
+
+    @BeforeEach
+    public void setUp() {
+        ticket = new Ticket(); // Initialize a Ticket with ticketID 1 and price 20.0
+    }
+
+    @Test
+    public void testGetTicketID() {
+        assertEquals(0, ticket.getTicketID());
+    }
+
+    @Test
+    public void testGetPrice() {
+        assertEquals(20.0, ticket.getPrice());
+    }
+
+    @Test
+    public void testSetPrice() {
+        ticket.setPrice(30.0);
+        assertEquals(30.0, ticket.getPrice());
+    }
+
+    @Test
+    public void testIsPaidStatus() {
+        assertFalse(ticket.isPaidStatus());
+    }
+
+    @Test
+    public void testSetPaidStatus() {
+        ticket.setPaidStatus(true);
+        assertTrue(ticket.isPaidStatus());
+    }
+
+    @Test
+    public void testGetTimeArrived() {
+        assertNotNull(ticket.getTimeArrived());
+        LocalDateTime.parse(ticket.getTimeArrived(), DateTimeFormatter.ISO_DATE_TIME); // Verify format
+    }
+
+    @Test
+    public void testSetTimeArrived() {
+        String newTime = "2024-12-01T12:00:00";
+        ticket.setTimeArrived(newTime);
+        assertEquals(newTime, ticket.getTimeArrived());
+    }
+
+    @Test
+    public void testCalculatePriceWithHoursAndRate() {
+        ticket.calculatePrice(5); // 5 hours at $10/hour
+        assertEquals(50.0, ticket.getPrice());
+    }
+
+    @Test
+    public void testCalculatePriceWithRate() {
+        // Set time arrived to 2 hours ago
+        LocalDateTime timeTwoHoursAgo = LocalDateTime.now().minusHours(2);
+        ticket.setTimeArrived(timeTwoHoursAgo.format(DateTimeFormatter.ISO_DATE_TIME));
+
+        ticket.calculatePrice(10.0); // $10/hour rate
+        assertEquals(20.0, ticket.getPrice(), 0.01); // Should calculate as 2 hours * $10/hour
+    }
+
+    @Test
+    public void testPrintTicket() {
+        ticket.setPaidStatus(false);
+        ticket.printTicket(); // Manually observe printed output in the console
+    }
+}
+

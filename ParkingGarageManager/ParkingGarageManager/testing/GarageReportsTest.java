@@ -1,4 +1,4 @@
-package ParkingGarageTests;
+package testing;
 
 import ParkingGarageManager.GarageReports;
 import static org.junit.Assert.*;
