@@ -15,24 +15,20 @@ public class TicketTest {
 
     @Before
     public void setUp() {
-        // Initialize a Ticket object with ticketID 1 and initial price 20.0
-        ticket = new Ticket(1, 20.0);
+        // Initialize a Ticket object
+        ticket = new Ticket();
     }
 
     @Test
     public void testGetTicketID() {
-        assertEquals(1, ticket.getTicketID());
-    }
-
-    @Test
-    public void testSetTicketID() {
-        ticket.setTicketID(2);
-        assertEquals(2, ticket.getTicketID());
+        int initialTicketID = ticket.getTicketID();
+        Ticket anotherTicket = new Ticket(); // Create another ticket to increment the ID
+        assertEquals(initialTicketID + 1, anotherTicket.getTicketID());
     }
 
     @Test
     public void testGetPrice() {
-        assertEquals(20.0, ticket.getPrice(), 0.01);
+        assertEquals(0.0, ticket.getPrice(), 0.01);
     }
 
     @Test
@@ -66,14 +62,6 @@ public class TicketTest {
     }
 
     @Test
-    public void testCreateTicket() {
-        ticket.createTicket(5, 50.0);
-        assertEquals(5, ticket.getTicketID());
-        assertEquals(50.0, ticket.getPrice(), 0.01);
-        assertFalse(ticket.isPaidStatus());
-    }
-
-    @Test
     public void testCalculatePriceWithRate() {
         // Set time arrived to 2 hours ago
         LocalDateTime timeTwoHoursAgo = LocalDateTime.now().minusHours(2);
@@ -86,6 +74,7 @@ public class TicketTest {
     @Test
     public void testPrintTicket() {
         // Test the output of printTicket (manually observe the console output)
+        ticket.setPaidStatus(true);
         ticket.printTicket();
     }
 }
