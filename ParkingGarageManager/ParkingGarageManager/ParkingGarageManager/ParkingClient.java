@@ -89,30 +89,29 @@ public class ParkingClient {
                 } else if(managerChoice==1){
                 	  // Start customer GUI
                 	 while (true) {
-                         int printTicket = cgui.promptCustomerAction(); // Get customer action
-                         if (printTicket==0) {
-                         		request.write(0);
+                         int customerChoice = cgui.promptCustomerAction(); // Get customer action
+                         if (customerChoice==0) {
                          		Garage status = (Garage)oIStream.readObject();
                          		cgui.displayGarageStatus(status.checkSpace());
                          		System.out.println(status.checkSpace());
-                         		if(status.checkSpace() == true) {
+                         		if(status.checkSpace() == false) {
+                         			request.write(0);
                          			Ticket Customer = (Ticket)oIStream.readObject(); // This should create the Ticket_123.txt file
                          			cgui.printTicket(Customer);//JOptionPane.showMessageDialog(null, "Ticket printed. Enjoy your stay!");
                                  }else {
                                 	 
                                  }
-                         } else if(printTicket==1)  {
+                         } else if(customerChoice==1)  {
                              if(cgui.displayPaymentStatus()) { // If customer chooses "Pay Ticket"
                              	//implement pay ticket here
                             	 request.write(1);
                              }
-                             
-                         }else { 
+                         }else  if(customerChoice==2){ 
                          	break;
                          }// Exit remove one server is implemented
                          
                      }
-                }else {
+                }else if(managerChoice==2){
                 	request.write(3);
                 	break;
                 }
